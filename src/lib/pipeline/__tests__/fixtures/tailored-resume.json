@@ -1,0 +1,106 @@
+{
+  "jobTitle": "Staff Software Engineer",
+  "company": "DataFlow Inc",
+  "jobDescription": "We are looking for a Staff Software Engineer to lead our data infrastructure team. You will design and build large-scale data pipelines, mentor engineers, and collaborate cross-functionally.",
+  "matchScore": 87,
+  "tailoringNotes": "Emphasized data pipeline experience and Kafka/Flink expertise. Foregrounded mentorship and leadership bullets. Moved DistCache project higher to highlight distributed systems background.",
+  "resume": {
+    "name": "Jane Doe",
+    "email": "jane.doe@example.com",
+    "phone": "+1 (555) 123-4567",
+    "location": "San Francisco, CA",
+    "linkedin": "https://linkedin.com/in/janedoe",
+    "github": "https://github.com/janedoe",
+    "website": "https://janedoe.dev",
+    "summary": "Staff-level software engineer with 8+ years of experience designing large-scale distributed systems and data pipelines. Proven track record of technical leadership, mentoring engineering teams, and driving infrastructure modernization initiatives.",
+    "experience": [
+      {
+        "company": "Acme Corp",
+        "title": "Senior Software Engineer",
+        "location": "San Francisco, CA",
+        "startDate": "2021-03",
+        "endDate": "Present",
+        "bullets": [
+          "Architected real-time data pipeline processing 2M events/day using Kafka and Flink, enabling sub-second analytics",
+          "Led migration of monolithic Python service to microservices, reducing p99 latency by 40% and operational toil by 60%",
+          "Mentored 4 junior engineers through weekly 1:1s, code reviews, and structured growth plans",
+          "Drove adoption of infrastructure-as-code with Terraform across 3 teams, cutting provisioning time from days to minutes"
+        ]
+      },
+      {
+        "company": "StartupXYZ",
+        "title": "Software Engineer",
+        "location": "New York, NY",
+        "startDate": "2018-06",
+        "endDate": "2021-02",
+        "bullets": [
+          "Designed PostgreSQL schema and built ETL pipelines to ingest and transform 500GB+ of data",
+          "Built React/TypeScript frontend serving 50K daily active users",
+          "Containerized legacy Rails application with Docker and deployed to Kubernetes"
+        ]
+      },
+      {
+        "company": "Tech Consulting LLC",
+        "title": "Junior Developer",
+        "location": "Boston, MA",
+        "startDate": "2016-08",
+        "endDate": "2018-05",
+        "bullets": [
+          "Developed REST APIs using Node.js and Express for 5+ client projects",
+          "Maintained CI/CD pipelines with Jenkins and automated integration tests"
+        ]
+      }
+    ],
+    "education": [
+      {
+        "institution": "Massachusetts Institute of Technology",
+        "degree": "Bachelor of Science",
+        "field": "Computer Science",
+        "graduationDate": "2016-05",
+        "gpa": "3.8",
+        "honors": ["Dean's List"],
+        "relevantCoursework": ["Distributed Systems", "Algorithms", "Database Systems"]
+      }
+    ],
+    "skills": [
+      {
+        "category": "Languages",
+        "items": ["Python", "Go", "TypeScript", "SQL", "Java"]
+      },
+      {
+        "category": "Data & Streaming",
+        "items": ["Kafka", "Flink", "Spark", "Airflow", "dbt", "Redis"]
+      },
+      {
+        "category": "Infrastructure",
+        "items": ["AWS", "GCP", "Kubernetes", "Docker", "Terraform", "PostgreSQL"]
+      },
+      {
+        "category": "Practices",
+        "items": ["System Design", "Technical Leadership", "Mentoring", "CI/CD", "TDD"]
+      }
+    ],
+    "projects": [
+      {
+        "name": "DistCache",
+        "description": "Distributed in-memory cache with consistent hashing and replication",
+        "technologies": ["Go", "Raft consensus", "gRPC"],
+        "url": "https://github.com/janedoe/distcache"
+      },
+      {
+        "name": "OpenResume",
+        "description": "Open-source resume builder with AI-powered tailoring",
+        "technologies": ["Next.js", "TypeScript", "OpenAI API"],
+        "url": "https://github.com/janedoe/openresume"
+      }
+    ],
+    "leadership": [
+      {
+        "role": "Engineering Mentor",
+        "organization": "Code.org",
+        "period": "2020 - Present",
+        "description": "Volunteer mentor for underrepresented students learning software development"
+      }
+    ]
+  }
+}

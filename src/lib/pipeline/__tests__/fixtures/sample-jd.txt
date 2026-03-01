@@ -1,0 +1,37 @@
+Staff Software Engineer - Data Infrastructure
+DataFlow Inc | San Francisco, CA (Hybrid)
+
+About DataFlow Inc
+DataFlow Inc is the leading real-time analytics platform trusted by 500+ enterprises to process and visualize billions of events per day. Our data infrastructure team builds the backbone that powers our customers' insights.
+
+About the Role
+We are looking for a Staff Software Engineer to join our Data Infrastructure team. You will be responsible for designing, building, and scaling our core data pipelines and streaming systems. You will also serve as a technical lead, mentoring engineers and influencing architectural decisions across the organization.
+
+Responsibilities
+- Design and build high-throughput, fault-tolerant data pipelines that process millions of events per second
+- Lead technical design reviews and architecture discussions across teams
+- Mentor and grow a team of 4-6 engineers through code reviews, 1:1s, and structured development plans
+- Partner with product managers and data scientists to translate requirements into robust technical solutions
+- Drive adoption of best practices in observability, testing, and infrastructure-as-code
+- Own reliability and performance SLAs for critical data infrastructure components
+
+Requirements
+- 7+ years of software engineering experience with 2+ years in a senior or staff-level role
+- Deep expertise in stream processing frameworks (Kafka, Flink, Spark Streaming, or similar)
+- Strong proficiency in Python, Go, or Java for backend systems
+- Experience building and operating distributed systems at scale
+- Proven track record of technical leadership and cross-functional collaboration
+- Strong SQL skills and experience with columnar or OLAP databases
+
+Nice to Have
+- Experience with cloud data warehouses (Snowflake, BigQuery, Redshift)
+- Contributions to open-source data tools
+- Experience in a high-growth startup environment
+- Knowledge of infrastructure-as-code tools (Terraform, Pulumi)
+
+What We Offer
+- Competitive salary: $220,000 - $280,000
+- Meaningful equity package
+- Comprehensive health, dental, and vision coverage
+- $5,000 annual learning and development budget
+- Flexible work arrangements (3 days in office)
