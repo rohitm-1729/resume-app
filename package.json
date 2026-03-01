@@ -6,6 +6,8 @@
     "dev": "next dev -p 3002",
     "build": "next build",
     "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
     "test": "vitest run",
     "test:watch": "vitest"
   },
@@ -17,13 +19,19 @@
     "react-dom": "19.2.3"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.4",
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/parser": "^8.56.1",
     "@vitejs/plugin-react": "^5.1.4",
+    "eslint": "^9.39.3",
+    "eslint-config-next": "^16.1.6",
+    "globals": "^17.4.0",
     "jsdom": "^28.1.0",
     "tailwindcss": "^4",
     "typescript": "^5",

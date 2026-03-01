@@ -1,6 +1,5 @@
 "use client";
 
-import type { PipelineResult } from "@/lib/types";
 
 interface TailorResponse {
   tailored: import("@/lib/types").TailoredResume;

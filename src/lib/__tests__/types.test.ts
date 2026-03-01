@@ -4,11 +4,6 @@ import type {
   TailoredResume,
   ValidationResult,
   PipelineResult,
-  SkillEntry,
-  Project,
-  LeadershipItem,
-  ExperienceEntry,
-  EducationEntry,
 } from "../types";
 import masterResumeFixture from "../../lib/pipeline/__tests__/fixtures/master-resume.json";
 import tailoredResumeFixture from "../../lib/pipeline/__tests__/fixtures/tailored-resume.json";
