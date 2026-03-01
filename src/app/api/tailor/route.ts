@@ -1,56 +1,63 @@
-import { NextRequest, NextResponse } from "next/server";
-import type { MasterResume, TailoredResume, ValidationResult } from "@/lib/types";
+import { NextRequest, NextResponse } from 'next/server';
+import path from 'path';
+import os from 'os';
+import type { PipelineResult } from '../../../lib/types';
+import { fetchJobDescription } from '../../../lib/pipeline/step2-fetch-jd';
+import { loadProfile } from '../../../lib/pipeline/step1-load-profile';
+import { tailorResume } from '../../../lib/pipeline/step4-tailor';
+import { renderPDF } from '../../../lib/pipeline/step5-render-pdf';
+import { validateResume } from '../../../lib/pipeline/step6-validate';
+import { fixResume } from '../../../lib/pipeline/step6b-fix';
 
-interface TailorRequest {
-  jobDescription: string;
+const PROFILE_PATH = path.join(os.homedir(), '.resume-app', 'profile.json');
+
+interface TailorRequestBody {
+  text?: string;
+  url?: string;
   targetPages: 1 | 2;
-  masterResume: MasterResume;
 }
 
-// Stub: real pipeline will be wired in a later issue.
 export async function POST(req: NextRequest) {
-  let body: TailorRequest;
+  let body: TailorRequestBody;
   try {
     body = await req.json();
   } catch {
-    return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
+    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  const { jobDescription, targetPages, masterResume } = body;
+  const { text, url, targetPages } = body;
 
-  if (!jobDescription?.trim()) {
-    return NextResponse.json({ error: "jobDescription is required." }, { status: 400 });
+  if (targetPages !== 1 && targetPages !== 2) {
+    return NextResponse.json({ error: 'targetPages must be 1 or 2' }, { status: 400 });
   }
-  if (!masterResume) {
-    return NextResponse.json({ error: "masterResume is required." }, { status: 400 });
+  if (!text && !url) {
+    return NextResponse.json({ error: 'Provide text or url' }, { status: 400 });
   }
 
-  // Stub: echo the master resume back as the tailored result.
-  // The real pipeline (tailor → validate → render PDF) will replace this.
-  const tailored: TailoredResume = {
-    jobTitle: "Role (stub)",
-    company: "Company (stub)",
-    jobDescription,
-    resume: masterResume,
-    tailoringNotes: `Stub response — pipeline not yet implemented. Target pages: ${targetPages}.`,
-    matchScore: 75,
-  };
+  try {
+    const jdText = url ? await fetchJobDescription(url) : text!;
+    const profile = await loadProfile(PROFILE_PATH);
+    let tailored = await tailorResume(profile, jdText);
+    let buffer = await renderPDF(tailored);
+    let validation = validateResume(tailored);
 
-  const validation: ValidationResult = {
-    valid: true,
-    errors: [],
-    warnings: ["This is a stub response. Real validation runs in the pipeline."],
-    score: 75,
-  };
+    if (!validation.valid) {
+      tailored = await fixResume(tailored, validation);
+      buffer = await renderPDF(tailored);
+      validation = validateResume(tailored);
+    }
 
-  // Return an empty PDF placeholder (1-byte stub).
-  const pdfBase64 = Buffer.from("%PDF-1.4 stub").toString("base64");
+    const result: Omit<PipelineResult, 'pdfBuffer'> & { pdfBase64: string } = {
+      success: true,
+      tailoredResume: tailored,
+      validation,
+      pdfBase64: buffer.toString('base64'),
+      steps: [],
+    };
 
-  return NextResponse.json({
-    tailored,
-    validation,
-    fixesApplied: [],
-    pages: targetPages,
-    pdfBase64,
-  });
+    return NextResponse.json(result);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
 }
