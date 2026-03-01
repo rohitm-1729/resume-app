@@ -1,0 +1,53 @@
+{
+  "tailored": {
+    "jobTitle": "Senior Software Engineer",
+    "company": "Acme Corp",
+    "jobDescription": "We are looking for a Senior Software Engineer to join our team.",
+    "resume": {
+      "name": "Jane Doe",
+      "email": "jane.doe@example.com",
+      "phone": "+1 (555) 123-4567",
+      "location": "San Francisco, CA",
+      "linkedin": "https://linkedin.com/in/janedoe",
+      "github": "https://github.com/janedoe",
+      "summary": "Experienced software engineer with 8+ years building scalable distributed systems.",
+      "experience": [
+        {
+          "company": "Acme Corp",
+          "title": "Senior Software Engineer",
+          "location": "San Francisco, CA",
+          "startDate": "2021-03",
+          "endDate": "Present",
+          "bullets": [
+            "Led migration of monolithic service to microservices, reducing p99 latency by 40%",
+            "Mentored 4 junior engineers through weekly 1:1s and code reviews"
+          ]
+        }
+      ],
+      "education": [
+        {
+          "institution": "State University",
+          "degree": "Bachelor of Science",
+          "field": "Computer Science",
+          "graduationDate": "2016-05",
+          "gpa": "3.8"
+        }
+      ],
+      "skills": [
+        { "category": "Languages", "items": ["TypeScript", "Python", "Go"] },
+        { "category": "Frameworks", "items": ["React", "Next.js", "Node.js"] }
+      ]
+    },
+    "tailoringNotes": "Highlighted distributed systems experience to match role requirements.",
+    "matchScore": 88
+  },
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "warnings": [],
+    "score": 88
+  },
+  "fixesApplied": [],
+  "pages": 1,
+  "pdfBase64": "JVBERi0xLjQKMSAwIG9iajw8L1R5cGUvQ2F0YWxvZy9QYWdlcyAyIDAgUj4+ZW5kb2JqCjIgMCBvYmo8PC9UeXBlL1BhZ2VzL0tpZHNbMyAwIFJdL0NvdW50IDE+PmVuZG9iagozIDAgb2JqPDwvVHlwZS9QYWdlL01lZGlhQm94WzAgMCA2MTIgNzkyXS9QYXJlbnQgMiAwIFIvUmVzb3VyY2VzPDw+Pj4+ZW5kb2JqCnhyZWYKMCA0CjAwMDAwMDAwMDAgNjU1MzUgZgowMDAwMDAwMDA5IDAwMDAwIG4KMDAwMDAwMDA1OCAwMDAwMCBuCjAwMDAwMDAxMTUgMDAwMDAgbgp0cmFpbGVyPDwvUm9vdCAxIDAgUi9TaXplIDQ+PgpzdGFydHhyZWYKMTkwCiUlRU9G"
+}
