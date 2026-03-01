@@ -97,7 +97,7 @@ export default function GeneratePage() {
         <PipelineStatus
           currentStep={currentStep}
           steps={PIPELINE_STEPS}
-          fixApplied={false}
+          fixApplied={fixApplied}
         />
       )}
 

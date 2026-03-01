@@ -5,7 +5,6 @@ import {
   View,
   Link,
   StyleSheet,
-  Font,
 } from "@react-pdf/renderer";
 import type { TailoredResume } from "@/lib/types";
 
