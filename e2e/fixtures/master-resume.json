@@ -1,0 +1,35 @@
+{
+  "name": "Jane Doe",
+  "email": "jane.doe@example.com",
+  "phone": "+1 (555) 123-4567",
+  "location": "San Francisco, CA",
+  "linkedin": "https://linkedin.com/in/janedoe",
+  "github": "https://github.com/janedoe",
+  "summary": "Experienced software engineer with 8+ years building scalable distributed systems.",
+  "experience": [
+    {
+      "company": "Acme Corp",
+      "title": "Senior Software Engineer",
+      "location": "San Francisco, CA",
+      "startDate": "2021-03",
+      "endDate": "Present",
+      "bullets": [
+        "Led migration of monolithic service to microservices, reducing p99 latency by 40%",
+        "Mentored 4 junior engineers through weekly 1:1s and code reviews"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "State University",
+      "degree": "Bachelor of Science",
+      "field": "Computer Science",
+      "graduationDate": "2016-05",
+      "gpa": "3.8"
+    }
+  ],
+  "skills": [
+    { "category": "Languages", "items": ["TypeScript", "Python", "Go"] },
+    { "category": "Frameworks", "items": ["React", "Next.js", "Node.js"] }
+  ]
+}
