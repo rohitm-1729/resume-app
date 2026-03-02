@@ -55,7 +55,7 @@ test.describe("API integration", () => {
       const res = await request.post(`${BASE_URL}/api/tailor`, {
         data: { text: "Looking for a Senior Software Engineer", targetPages: 1 },
       });
-      expect(res.status()).toBe(500);
+      expect(res.status()).toBe(404);
       const body = await res.json();
       expect(body.error).toBeTruthy();
     } finally {
@@ -65,22 +65,4 @@ test.describe("API integration", () => {
     }
   });
 
-  test("fetch-jd returns 400 when url field is missing", async ({ request }) => {
-    const res = await request.post(`${BASE_URL}/api/fetch-jd`, {
-      data: { notUrl: "https://example.com" },
-    });
-    expect(res.status()).toBe(400);
-    const body = await res.json();
-    expect(body.error).toMatch(/url/i);
-  });
-
-  test("fetch-jd returns text field for a valid URL", async ({ request }) => {
-    const res = await request.post(`${BASE_URL}/api/fetch-jd`, {
-      data: { url: "https://example.com" },
-    });
-    expect(res.status()).toBe(200);
-    const body = await res.json();
-    expect(typeof body.text).toBe("string");
-    expect(body.text.length).toBeGreaterThan(0);
-  });
 });

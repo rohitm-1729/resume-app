@@ -8,6 +8,8 @@ export class ProfilePage {
   }
 
   async pasteResume(json: string) {
+    // Profile page defaults to PDF upload mode — switch to JSON mode first
+    await this.page.getByRole("button", { name: "Paste JSON" }).click();
     await this.page.locator("textarea").fill(json);
   }
 
