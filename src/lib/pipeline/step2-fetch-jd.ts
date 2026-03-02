@@ -1,3 +1,5 @@
+import { parseJd } from "./parse-jd";
+
 export async function fetchJobDescription(source: string): Promise<string> {
   if (source.startsWith("http://") || source.startsWith("https://")) {
     const res = await fetch(source);
@@ -7,21 +9,7 @@ export async function fetchJobDescription(source: string): Promise<string> {
       );
     }
     const text = await res.text();
-    return stripHtml(text);
+    return parseJd(text);
   }
   return source.trim();
-}
-
-function stripHtml(html: string): string {
-  return html
-    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
-    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/\s+/g, " ")
-    .trim();
 }
