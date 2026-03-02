@@ -15,6 +15,10 @@ export class GeneratePage {
         await route.fulfill({ status: 400, json: { error: "Provide text or url" } });
         return;
       }
+      if (body.targetPages !== 1 && body.targetPages !== 2) {
+        await route.fulfill({ status: 400, json: { error: "targetPages must be 1 or 2" } });
+        return;
+      }
       await route.fulfill({ json: tailorFixture });
     });
   }
