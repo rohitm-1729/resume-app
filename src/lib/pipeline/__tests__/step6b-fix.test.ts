@@ -32,7 +32,7 @@ describe("step6b-fix", () => {
     const mockClient = makeMockClient(JSON.stringify(fixed));
 
     const result = await fixResume(tailored, failingValidation, mockClient);
-    expect(result.resume.summary).toBe("Fixed summary.");
+    expect(result.tailored.resume.summary).toBe("Fixed summary.");
   });
 
   it("handles JSON wrapped in markdown code fences", async () => {
@@ -44,7 +44,20 @@ describe("step6b-fix", () => {
     const mockClient = makeMockClient(fenced);
 
     const result = await fixResume(tailored, failingValidation, mockClient);
-    expect(result.resume.summary).toBe("Fixed summary.");
+    expect(result.tailored.resume.summary).toBe("Fixed summary.");
+  });
+
+  it("returns fixesApplied populated from validation errors and warnings", async () => {
+    const mockClient = makeMockClient(JSON.stringify(tailored));
+    const validation: ValidationResult = {
+      valid: false,
+      errors: ["Missing jobTitle"],
+      warnings: ["resume.summary is missing"],
+      score: 30,
+    };
+
+    const result = await fixResume(tailored, validation, mockClient);
+    expect(result.fixesApplied).toEqual(["Missing jobTitle", "resume.summary is missing"]);
   });
 
   it("throws when Claude returns no JSON", async () => {

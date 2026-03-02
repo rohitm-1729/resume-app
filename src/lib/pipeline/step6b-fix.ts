@@ -5,7 +5,7 @@ export async function fixResume(
   tailored: TailoredResume,
   validation: ValidationResult,
   client?: Anthropic
-): Promise<TailoredResume> {
+): Promise<{ tailored: TailoredResume; fixesApplied: string[] }> {
   const anthropic = client ?? new Anthropic();
 
   const errorLines = validation.errors.map((e) => `- ${e}`).join("\n");
@@ -39,13 +39,17 @@ ${warningLines || "(none)"}
   }
 
   const text = content.text;
+  const fixesApplied = [...validation.errors, ...validation.warnings];
+
   const fenceMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/);
-  if (fenceMatch) return JSON.parse(fenceMatch[1].trim()) as TailoredResume;
+  if (fenceMatch) {
+    return { tailored: JSON.parse(fenceMatch[1].trim()) as TailoredResume, fixesApplied };
+  }
 
   const start = text.indexOf("{");
   const end = text.lastIndexOf("}");
   if (start === -1 || end === -1) {
     throw new Error("No JSON found in fix response");
   }
-  return JSON.parse(text.slice(start, end + 1)) as TailoredResume;
+  return { tailored: JSON.parse(text.slice(start, end + 1)) as TailoredResume, fixesApplied };
 }
