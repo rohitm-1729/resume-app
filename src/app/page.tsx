@@ -85,8 +85,8 @@ export default function GeneratePage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900">Generate resume</h1>
-        <p className="mt-1 text-sm text-zinc-500">
+        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-white">Generate resume</h1>
+        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
           Paste a job description and get a tailored PDF in seconds.
         </p>
       </div>
@@ -102,7 +102,7 @@ export default function GeneratePage() {
       )}
 
       {error && (
-        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <div className="rounded-lg border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950 px-4 py-3 text-sm text-red-700 dark:text-red-400">
           {error}
         </div>
       )}

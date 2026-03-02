@@ -28,18 +28,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100`}
       >
-        <nav className="border-b border-zinc-200 bg-white px-6 py-3">
+        <nav className="border-b border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-6 py-3">
           <div className="mx-auto flex max-w-4xl items-center gap-6">
-            <span className="font-semibold text-zinc-900">Resume Tailor</span>
+            <span className="font-semibold text-zinc-900 dark:text-white">Resume Tailor</span>
             <Link
               href="/"
-              className="text-sm text-zinc-600 hover:text-zinc-900 transition-colors"
+              className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
             >
               Generate
             </Link>
             <Link
               href="/profile"
-              className="text-sm text-zinc-600 hover:text-zinc-900 transition-colors"
+              className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
             >
               Profile
             </Link>

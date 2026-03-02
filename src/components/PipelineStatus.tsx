@@ -12,7 +12,7 @@ export default function PipelineStatus({
   fixApplied,
 }: Props) {
   return (
-    <div className="rounded-lg border border-zinc-200 bg-white px-6 py-4">
+    <div className="rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-6 py-4">
       <div className="space-y-3">
         {steps.map((step, i) => {
           const status =
@@ -62,7 +62,7 @@ export default function PipelineStatus({
                   </svg>
                 )}
                 {status === "pending" && (
-                  <span className="h-2 w-2 rounded-full bg-zinc-300" />
+                  <span className="h-2 w-2 rounded-full bg-zinc-300 dark:bg-zinc-600" />
                 )}
               </span>
 
@@ -70,10 +70,10 @@ export default function PipelineStatus({
               <span
                 className={`text-sm ${
                   status === "done"
-                    ? "text-zinc-500 line-through"
+                    ? "text-zinc-500 dark:text-zinc-400 line-through"
                     : status === "running"
-                    ? "font-medium text-zinc-900"
-                    : "text-zinc-400"
+                    ? "font-medium text-zinc-900 dark:text-zinc-100"
+                    : "text-zinc-400 dark:text-zinc-500"
                 }`}
               >
                 {step}
@@ -81,7 +81,7 @@ export default function PipelineStatus({
 
               {/* Auto-fix badge on last step */}
               {fixApplied && i === steps.length - 1 && status === "done" && (
-                <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700">
+                <span className="ml-2 rounded-full bg-amber-100 dark:bg-amber-900 px-2 py-0.5 text-xs font-medium text-amber-700 dark:text-amber-300">
                   Auto-fix applied
                 </span>
               )}

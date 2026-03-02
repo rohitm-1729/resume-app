@@ -23,14 +23,14 @@ export default function JobDescriptionInput({ onSubmit, loading }: Props) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Toggle */}
-      <div className="flex rounded-lg border border-zinc-200 bg-white p-1 w-fit">
+      <div className="flex rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-1 w-fit">
         <button
           type="button"
           onClick={() => setMode("text")}
           className={`rounded-md px-4 py-1.5 text-sm font-medium transition-colors ${
             mode === "text"
-              ? "bg-zinc-900 text-white"
-              : "text-zinc-600 hover:text-zinc-900"
+              ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900"
+              : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
           }`}
         >
           Paste text
@@ -40,8 +40,8 @@ export default function JobDescriptionInput({ onSubmit, loading }: Props) {
           onClick={() => setMode("url")}
           className={`rounded-md px-4 py-1.5 text-sm font-medium transition-colors ${
             mode === "url"
-              ? "bg-zinc-900 text-white"
-              : "text-zinc-600 hover:text-zinc-900"
+              ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900"
+              : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
           }`}
         >
           Enter URL
@@ -56,7 +56,7 @@ export default function JobDescriptionInput({ onSubmit, loading }: Props) {
           placeholder="Paste the job description here..."
           rows={8}
           required
-          className="w-full rounded-lg border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 placeholder-zinc-400 focus:border-zinc-400 focus:outline-none resize-none"
+          className="w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-3 text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:border-zinc-400 dark:focus:border-zinc-500 focus:outline-none resize-none"
         />
       ) : (
         <input
@@ -65,13 +65,13 @@ export default function JobDescriptionInput({ onSubmit, loading }: Props) {
           onChange={(e) => setUrl(e.target.value)}
           placeholder="https://example.com/job-posting"
           required
-          className="w-full rounded-lg border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 placeholder-zinc-400 focus:border-zinc-400 focus:outline-none"
+          className="w-full rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-4 py-3 text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:border-zinc-400 dark:focus:border-zinc-500 focus:outline-none"
         />
       )}
 
       {/* Target pages */}
       <div className="flex items-center gap-4">
-        <span className="text-sm font-medium text-zinc-700">Target pages:</span>
+        <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Target pages:</span>
         {([1, 2] as const).map((n) => (
           <label key={n} className="flex items-center gap-2 cursor-pointer">
             <input
@@ -82,7 +82,7 @@ export default function JobDescriptionInput({ onSubmit, loading }: Props) {
               onChange={() => setTargetPages(n)}
               className="accent-zinc-900"
             />
-            <span className="text-sm text-zinc-700">{n}</span>
+            <span className="text-sm text-zinc-700 dark:text-zinc-300">{n}</span>
           </label>
         ))}
       </div>
@@ -91,7 +91,7 @@ export default function JobDescriptionInput({ onSubmit, loading }: Props) {
       <button
         type="submit"
         disabled={loading}
-        className="flex items-center gap-2 rounded-lg bg-zinc-900 px-6 py-2.5 text-sm font-medium text-white hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        className="flex items-center gap-2 rounded-lg bg-zinc-900 dark:bg-white px-6 py-2.5 text-sm font-medium text-white dark:text-zinc-900 hover:bg-zinc-700 dark:hover:bg-zinc-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
         {loading && (
           <svg
