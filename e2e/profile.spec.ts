@@ -5,6 +5,17 @@ import masterResume from "./fixtures/master-resume.json";
 const VALID_JSON = JSON.stringify(masterResume, null, 2);
 
 test.describe("Profile page", () => {
+  // Mock POST /api/profile so these UI tests don't pollute the real disk profile
+  test.beforeEach(async ({ page }) => {
+    await page.route("/api/profile", async (route) => {
+      if (route.request().method() === "POST") {
+        await route.fulfill({ json: { ok: true } });
+      } else {
+        await route.continue();
+      }
+    });
+  });
+
   test("saves a valid master resume JSON", async ({ page }) => {
     const profile = new ProfilePage(page);
     await profile.goto();

@@ -9,18 +9,34 @@ const PROFILE_PATH = path.join(os.homedir(), ".resume-app", "profile.json");
 
 test.describe("API integration", () => {
   test("profile round-trip: POST then GET returns same data", async ({ request }) => {
-    const postRes = await request.post(`${BASE_URL}/api/profile`, {
-      data: masterResume,
-    });
-    expect(postRes.status()).toBe(200);
-    expect(await postRes.json()).toEqual({ ok: true });
+    const backupPath = `${PROFILE_PATH}.bak`;
+    let hadProfile = false;
+    try {
+      await fs.rename(PROFILE_PATH, backupPath);
+      hadProfile = true;
+    } catch {
+      // no profile yet — that's fine
+    }
 
-    const getRes = await request.get(`${BASE_URL}/api/profile`);
-    expect(getRes.status()).toBe(200);
-    const profile = await getRes.json();
-    expect(profile.name).toBe(masterResume.name);
-    expect(profile.email).toBe(masterResume.email);
-    expect(profile.experience).toEqual(masterResume.experience);
+    try {
+      const postRes = await request.post(`${BASE_URL}/api/profile`, {
+        data: masterResume,
+      });
+      expect(postRes.status()).toBe(200);
+      expect(await postRes.json()).toEqual({ ok: true });
+
+      const getRes = await request.get(`${BASE_URL}/api/profile`);
+      expect(getRes.status()).toBe(200);
+      const profile = await getRes.json();
+      expect(profile.name).toBe(masterResume.name);
+      expect(profile.email).toBe(masterResume.email);
+      expect(profile.experience).toEqual(masterResume.experience);
+    } finally {
+      await fs.unlink(PROFILE_PATH).catch(() => {});
+      if (hadProfile) {
+        await fs.rename(backupPath, PROFILE_PATH);
+      }
+    }
   });
 
   test("tailor returns 400 when targetPages is missing", async ({ request }) => {
