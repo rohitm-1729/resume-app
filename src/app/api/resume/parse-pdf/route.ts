@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
-import pdfParse from 'pdf-parse';
+import { PDFParse } from 'pdf-parse';
 
 export async function POST(req: NextRequest) {
   const contentType = req.headers.get('content-type') ?? '';
@@ -28,7 +28,8 @@ export async function POST(req: NextRequest) {
   let extractedText: string;
   try {
     const buffer = Buffer.from(await file.arrayBuffer());
-    const result = await pdfParse(buffer);
+    const parser = new PDFParse({ data: buffer });
+    const result = await parser.getText();
     extractedText = result.text;
     if (!extractedText.trim()) {
       return NextResponse.json({ error: 'PDF appears to be empty or has no extractable text' }, { status: 422 });
