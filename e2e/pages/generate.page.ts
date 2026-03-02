@@ -10,6 +10,11 @@ export class GeneratePage {
 
   async mockTailorApi() {
     await this.page.route("/api/tailor", async (route) => {
+      const body = route.request().postDataJSON() as Record<string, unknown>;
+      if (!body.text && !body.url) {
+        await route.fulfill({ status: 400, json: { error: "Provide text or url" } });
+        return;
+      }
       await route.fulfill({ json: tailorFixture });
     });
   }

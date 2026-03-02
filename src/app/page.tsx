@@ -61,7 +61,7 @@ export default function GeneratePage() {
       const res = await fetch("/api/tailor", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ jobDescription: jd, targetPages, masterResume }),
+        body: JSON.stringify({ text: jd, targetPages }),
       });
 
       clearInterval(stepTimer);
