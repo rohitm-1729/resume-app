@@ -78,7 +78,7 @@ export default function ProfilePage() {
     }
   }, []);
 
-  function handleSave() {
+  async function handleSave() {
     setSaved(false);
     setValidationError(null);
 
@@ -97,6 +97,23 @@ export default function ProfilePage() {
     }
 
     localStorage.setItem(STORAGE_KEY, json);
+
+    try {
+      const res = await fetch("/api/profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: json,
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setValidationError(data.error ?? `Failed to save profile (${res.status})`);
+        return;
+      }
+    } catch {
+      setValidationError("Network error — could not save profile to server.");
+      return;
+    }
+
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   }

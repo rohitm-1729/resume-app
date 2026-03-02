@@ -36,7 +36,19 @@ export async function POST(req: NextRequest) {
 
   try {
     const jdText = url ? await fetchJobDescription(url) : text!;
-    const profile = await loadProfile(PROFILE_PATH);
+    let profile;
+    try {
+      profile = await loadProfile(PROFILE_PATH);
+    } catch (err) {
+      const isNotFound = err instanceof Error && 'code' in err && (err as NodeJS.ErrnoException).code === 'ENOENT';
+      if (isNotFound) {
+        return NextResponse.json(
+          { error: 'No profile found. Please visit /profile to set up your master resume before generating.' },
+          { status: 404 },
+        );
+      }
+      throw err;
+    }
     let tailored = await tailorResume(profile, jdText);
     let buffer = await renderPDF(tailored);
     let validation = validateResume(tailored);
