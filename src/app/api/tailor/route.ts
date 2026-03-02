@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import path from 'path';
 import os from 'os';
-import type { PipelineResult } from '../../../lib/types';
 import { fetchJobDescription } from '../../../lib/pipeline/step2-fetch-jd';
 import { loadProfile } from '../../../lib/pipeline/step1-load-profile';
 import { tailorResume } from '../../../lib/pipeline/step4-tailor';
@@ -38,24 +37,26 @@ export async function POST(req: NextRequest) {
     const jdText = url ? await fetchJobDescription(url) : text!;
     const profile = await loadProfile(PROFILE_PATH);
     let tailored = await tailorResume(profile, jdText);
-    let buffer = await renderPDF(tailored);
+    let { buffer, pages } = await renderPDF(tailored);
     let validation = validateResume(tailored);
+    let fixesApplied: string[] = [];
 
     if (!validation.valid) {
-      tailored = await fixResume(tailored, validation);
-      buffer = await renderPDF(tailored);
+      const fixed = await fixResume(tailored, validation);
+      tailored = fixed.tailored;
+      fixesApplied = fixed.fixesApplied;
+      ({ buffer, pages } = await renderPDF(tailored));
       validation = validateResume(tailored);
     }
 
-    const result: Omit<PipelineResult, 'pdfBuffer'> & { pdfBase64: string } = {
+    return NextResponse.json({
       success: true,
-      tailoredResume: tailored,
+      tailored,
       validation,
+      fixesApplied,
+      pages,
       pdfBase64: buffer.toString('base64'),
-      steps: [],
-    };
-
-    return NextResponse.json(result);
+    });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
     return NextResponse.json({ error: message }, { status: 500 });
