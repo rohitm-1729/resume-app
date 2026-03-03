@@ -35,6 +35,10 @@ export async function POST(req: NextRequest) {
 
   try {
     const jdText = url ? await fetchJobDescription(url) : text!;
+    console.log(
+      `[tailor] request start: method=POST targetPages=${targetPages} jdLength=${jdText.length}`
+    );
+
     let profile;
     try {
       profile = await loadProfile(PROFILE_PATH);
@@ -48,18 +52,46 @@ export async function POST(req: NextRequest) {
       }
       throw err;
     }
+
+    console.log('[tailor] step4: start');
+    let t = Date.now();
     let tailored = await tailorResume(profile, jdText);
+    console.log(`[tailor] step4: done in ${Date.now() - t}ms`);
+
+    console.log('[tailor] step5: start');
+    t = Date.now();
     let { buffer, pages } = await renderPDF(tailored);
+    console.log(`[tailor] step5: done in ${Date.now() - t}ms`);
+
+    console.log('[tailor] step6: start');
+    t = Date.now();
     let validation = validateResume(tailored);
+    console.log(`[tailor] step6: done in ${Date.now() - t}ms`);
+
     let fixesApplied: string[] = [];
 
     if (!validation.valid) {
+      console.log('[tailor] step6b: start (validation failed, attempting fix)');
+      t = Date.now();
       const fixed = await fixResume(tailored, validation);
       tailored = fixed.tailored;
       fixesApplied = fixed.fixesApplied;
+      console.log(`[tailor] step6b: done in ${Date.now() - t}ms`);
+
+      console.log('[tailor] step5: re-render after fix');
+      t = Date.now();
       ({ buffer, pages } = await renderPDF(tailored));
+      console.log(`[tailor] step5: re-render done in ${Date.now() - t}ms`);
+
+      console.log('[tailor] step6: re-validate after fix');
+      t = Date.now();
       validation = validateResume(tailored);
+      console.log(`[tailor] step6: re-validate done in ${Date.now() - t}ms`);
     }
+
+    console.log(
+      `[tailor] pipeline complete: valid=${validation.valid} score=${validation.score} pages=${pages} fixesApplied=${fixesApplied.length}`
+    );
 
     return NextResponse.json({
       success: true,
@@ -70,6 +102,7 @@ export async function POST(req: NextRequest) {
       pdfBase64: buffer.toString('base64'),
     });
   } catch (err) {
+    console.error('[tailor] pipeline error:', err instanceof Error ? err.stack : err);
     const message = err instanceof Error ? err.message : 'Unknown error';
     return NextResponse.json({ error: message }, { status: 500 });
   }

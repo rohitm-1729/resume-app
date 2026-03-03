@@ -8,6 +8,10 @@ export async function fixResume(
 ): Promise<{ tailored: TailoredResume; fixesApplied: string[] }> {
   const anthropic = client ?? new Anthropic();
 
+  console.log(
+    `[tailor] step6b: fix attempt, errors=${validation.errors.length} warnings=${validation.warnings.length}`
+  );
+
   const errorLines = validation.errors.map((e) => `- ${e}`).join("\n");
   const warningLines = validation.warnings.map((w) => `- ${w}`).join("\n");
 
@@ -41,15 +45,19 @@ ${warningLines || "(none)"}
   const text = content.text;
   const fixesApplied = [...validation.errors, ...validation.warnings];
 
+  let tailoredFixed: TailoredResume;
   const fenceMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/);
   if (fenceMatch) {
-    return { tailored: JSON.parse(fenceMatch[1].trim()) as TailoredResume, fixesApplied };
+    tailoredFixed = JSON.parse(fenceMatch[1].trim()) as TailoredResume;
+  } else {
+    const start = text.indexOf("{");
+    const end = text.lastIndexOf("}");
+    if (start === -1 || end === -1) {
+      throw new Error("No JSON found in fix response");
+    }
+    tailoredFixed = JSON.parse(text.slice(start, end + 1)) as TailoredResume;
   }
 
-  const start = text.indexOf("{");
-  const end = text.lastIndexOf("}");
-  if (start === -1 || end === -1) {
-    throw new Error("No JSON found in fix response");
-  }
-  return { tailored: JSON.parse(text.slice(start, end + 1)) as TailoredResume, fixesApplied };
+  console.log(`[tailor] step6b: fixes applied (${fixesApplied.length}):`, fixesApplied);
+  return { tailored: tailoredFixed, fixesApplied };
 }
