@@ -56,5 +56,13 @@ export function validateResume(tailored: TailoredResume): ValidationResult {
   }
 
   const score = Math.max(0, 100 - errors.length * 15 - warnings.length * 5);
-  return { valid: errors.length === 0, errors, warnings, score };
+  const result: ValidationResult = { valid: errors.length === 0, errors, warnings, score };
+
+  console.log(
+    `[tailor] step6: valid=${result.valid} score=${score} errors=${errors.length} warnings=${warnings.length}`
+  );
+  if (errors.length) console.log("[tailor] step6: errors:", errors);
+  if (warnings.length) console.log("[tailor] step6: warnings:", warnings);
+
+  return result;
 }

@@ -10,18 +10,34 @@ export async function tailorResume(
   const anthropic = client ?? new Anthropic();
   const prompt = buildPrompt({ profile, jobDescription });
 
+  const model = "claude-opus-4-6";
+  const t0 = Date.now();
   const message = await anthropic.messages.create({
-    model: "claude-opus-4-6",
+    model,
     max_tokens: 8192,
     messages: [{ role: "user", content: prompt }],
   });
+  const elapsed = Date.now() - t0;
+
+  const { input_tokens, output_tokens } = message.usage;
+  console.log(
+    `[tailor] step4: model=${model} responded in ${elapsed}ms, ${input_tokens} input tokens, ${output_tokens} output tokens`
+  );
 
   const content = message.content[0];
   if (content.type !== "text") {
     throw new Error("Unexpected response type from Claude");
   }
 
-  return JSON.parse(extractJson(content.text)) as TailoredResume;
+  let parsed: TailoredResume;
+  try {
+    parsed = JSON.parse(extractJson(content.text)) as TailoredResume;
+    console.log("[tailor] step4: JSON parse success");
+  } catch (err) {
+    console.error("[tailor] step4: JSON parse failed", err);
+    throw err;
+  }
+  return parsed;
 }
 
 function extractJson(text: string): string {
