@@ -1,14 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import path from 'path';
-import os from 'os';
 import { fetchJobDescription } from '../../../lib/pipeline/step2-fetch-jd';
-import { loadProfile } from '../../../lib/pipeline/step1-load-profile';
 import { tailorResume } from '../../../lib/pipeline/step4-tailor';
 import { renderPDF } from '../../../lib/pipeline/step5-render-pdf';
 import { validateResume } from '../../../lib/pipeline/step6-validate';
 import { fixResume } from '../../../lib/pipeline/step6b-fix';
-
-const PROFILE_PATH = path.join(os.homedir(), '.resume-app', 'profile.json');
+import { supabase } from '../../../lib/supabase';
+import type { MasterResume } from '../../../lib/types';
 
 interface TailorRequestBody {
   text?: string;
@@ -34,20 +31,21 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const jdText = url ? await fetchJobDescription(url) : text!;
-    let profile;
-    try {
-      profile = await loadProfile(PROFILE_PATH);
-    } catch (err) {
-      const isNotFound = err instanceof Error && 'code' in err && (err as NodeJS.ErrnoException).code === 'ENOENT';
-      if (isNotFound) {
-        return NextResponse.json(
-          { error: 'No profile found. Please visit /profile to set up your master resume before generating.' },
-          { status: 404 },
-        );
-      }
-      throw err;
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('data')
+      .eq('id', 1)
+      .single();
+
+    if (error || !data) {
+      return NextResponse.json(
+        { error: 'No profile found. Please visit /profile to set up your master resume before generating.' },
+        { status: 404 },
+      );
     }
+
+    const profile = data.data as MasterResume;
+    const jdText = url ? await fetchJobDescription(url) : text!;
     let tailored = await tailorResume(profile, jdText);
     let { buffer, pages } = await renderPDF(tailored);
     let validation = validateResume(tailored);

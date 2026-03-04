@@ -1,26 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
-import os from 'os';
 import type { MasterResume } from '../../../lib/types';
-import { loadProfile } from '../../../lib/pipeline/step1-load-profile';
 import { getFixtureMasterResume } from '../../../lib/pipeline/seed';
 import { validateMasterResume } from '../../../lib/pipeline/validate';
-
-const PROFILE_DIR = path.join(os.homedir(), '.resume-app');
-const PROFILE_PATH = path.join(PROFILE_DIR, 'profile.json');
+import { supabase } from '../../../lib/supabase';
 
 export async function GET() {
   try {
-    let profile: MasterResume;
-    try {
-      profile = await loadProfile(PROFILE_PATH);
-    } catch {
-      // Seed from fixture on first run
-      profile = await getFixtureMasterResume();
-      await fs.mkdir(PROFILE_DIR, { recursive: true });
-      await fs.writeFile(PROFILE_PATH, JSON.stringify(profile, null, 2), 'utf-8');
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('data')
+      .eq('id', 1)
+      .single();
+
+    if (error && error.code !== 'PGRST116') {
+      throw new Error(error.message);
     }
+
+    if (data) {
+      return NextResponse.json(data.data as MasterResume);
+    }
+
+    // Seed from fixture on first run
+    const profile = await getFixtureMasterResume();
+    const { error: insertError } = await supabase
+      .from('profiles')
+      .insert({ id: 1, data: profile });
+
+    if (insertError) {
+      throw new Error(insertError.message);
+    }
+
     return NextResponse.json(profile);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
@@ -45,8 +54,14 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await fs.mkdir(PROFILE_DIR, { recursive: true });
-    await fs.writeFile(PROFILE_PATH, JSON.stringify(body, null, 2), 'utf-8');
+    const { error } = await supabase
+      .from('profiles')
+      .upsert({ id: 1, data: body, updated_at: new Date().toISOString() });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
     return NextResponse.json({ ok: true });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
