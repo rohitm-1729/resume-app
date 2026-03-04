@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
+import path from 'path';
 
 export async function POST(req: NextRequest) {
   const contentType = req.headers.get('content-type') ?? '';
@@ -45,6 +46,8 @@ export async function POST(req: NextRequest) {
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { PDFParse } = await import('pdf-parse') as any;
+    const workerPath = path.join(process.cwd(), 'node_modules/pdf-parse/dist/worker/pdf.worker.mjs');
+    PDFParse.setWorker(`file://${workerPath}`);
     const result = await new PDFParse({ data: buffer }).getText();
     extractedText = result.text;
     if (!extractedText.trim()) {
