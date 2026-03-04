@@ -27,6 +27,11 @@ export async function POST(req: NextRequest) {
   let extractedText: string;
   try {
     const buffer = Buffer.from(await file.arrayBuffer());
+    // pdfjs-dist requires DOMMatrix which doesn't exist in Node.js
+    if (typeof globalThis.DOMMatrix === 'undefined') {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (globalThis as any).DOMMatrix = class DOMMatrix {};
+    }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { PDFParse } = await import('pdf-parse') as any;
     const result = await new PDFParse({ data: buffer }).getText();
