@@ -28,9 +28,9 @@ export async function POST(req: NextRequest) {
   let extractedText: string;
   try {
     const buffer = Buffer.from(await file.arrayBuffer());
-    const parser = new PDFParse({ data: buffer });
-    const result = await parser.getText();
-    extractedText = result.text;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await new (PDFParse as any)({ data: buffer }).getText();
+    extractedText = (result as { text: string }).text;
     if (!extractedText.trim()) {
       return NextResponse.json({ error: 'PDF appears to be empty or has no extractable text' }, { status: 422 });
     }
